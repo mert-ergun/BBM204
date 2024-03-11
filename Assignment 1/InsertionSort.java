@@ -1,9 +1,9 @@
 public class InsertionSort {
-    public static <T extends Comparable<T>> T[] insertionSort(T[] array) {
+    public static int[] sort(int[] array) {
         for (int i = 1; i < array.length; i++) {
-            T key = array[i];
+            int key = array[i];
             int j = i - 1;
-            while (j >= 0 && array[j].compareTo(key) > 0) {
+            while (j >= 0 && array[j] > key) {
                 array[j + 1] = array[j];
                 j--;
             }

@@ -1,9 +1,9 @@
 public class MergeSort {
-    public static <T extends Comparable<T>> T[] mergeSort(T[] array) {
+    public static int[] sort(int[] array) {
         if (array.length > 1) {
             int mid = array.length / 2;
-            T[] left = (T[]) new Comparable[mid];
-            T[] right = (T[]) new Comparable[array.length - mid];
+            int[] left = new int[mid];
+            int[] right = new int[array.length - mid];
 
             for (int i = 0; i < mid; i++) {
                 left[i] = array[i];
@@ -12,15 +12,15 @@ public class MergeSort {
                 right[i - mid] = array[i];
             }
 
-            mergeSort(left);
-            mergeSort(right);
+            sort(left);
+            sort(right);
 
             int i = 0;
             int j = 0;
             int k = 0;
 
             while (i < left.length && j < right.length) {
-                if (left[i].compareTo(right[j]) < 0) {
+                if (left[i] < j) {
                     array[k] = left[i];
                     i++;
                 } else {

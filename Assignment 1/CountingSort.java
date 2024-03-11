@@ -1,25 +1,30 @@
 public class CountingSort {
-    public static int[] countingSort(int[] array) {
-        int max = array[0];
-        for (int i = 1; i < array.length; i++) {
-            if (array[i] > max) {
-                max = array[i];
+    public static int[] sort(int[] array) {
+        int k = 0;
+        
+        int size = array.length;
+        for (int i = 0; i < size; i++) {
+            if (array[i] > k) {
+                k = array[i];
             }
         }
+        
+        int[] count = new int[k + 1];
+        int[] output = new int[array.length];
 
-        int[] count = new int[max + 1];
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 0; i < size; i++) {
             count[array[i]]++;
         }
 
-        int z = 0;
-        for (int i = 0; i < count.length; i++) {
-            while (count[i] > 0) {
-                array[z] = i;
-                z++;
-                count[i]--;
-            }
+        for (int i = 1; i <= k; i++) {
+            count[i] += count[i - 1];
         }
-        return array;
+
+        for (int i = size - 1; i >= 0; i--) {
+            output[count[array[i]] - 1] = array[i];
+            count[array[i]]--;
+        }
+
+        return output;
     }
 }
