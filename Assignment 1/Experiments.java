@@ -274,14 +274,18 @@ public class Experiments {
         return array;
     }
 
-    public static void main(String[] args) {
-
+    public static void warmup() {
         for (int warmup = 0; warmup < 100000; warmup++) {
             int[] warmupArray = generateRandomArray(500); // Generate or read and shuffle
             int key = warmupArray[ThreadLocalRandom.current().nextInt(500)];
             LinearSearch.search(warmupArray, key);
             BinarySearch.search(warmupArray, key);
         }
+    }
+
+    public static void main(String[] args) {
+
+        warmup();
 
 
         System.out.println("Sort Random Data");
