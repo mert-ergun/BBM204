@@ -1,10 +1,13 @@
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Experiments {
     public static double[] SortRandomData(int size) {
         // Read data from file
         List<Integer> data = FileIO.readFile("TrafficFlowDataset.csv");
+        Collections.shuffle(data);
 
         // Convert list to array
         int[] array = new int[size];
@@ -58,6 +61,7 @@ public class Experiments {
     public static double[] SortSortedData(int size) {
         // Read data from file
         List<Integer> data = FileIO.readFile("TrafficFlowDataset.csv");
+        Collections.shuffle(data);
 
         // Convert list to array
         int[] array = new int[size];
@@ -113,6 +117,7 @@ public class Experiments {
     public static double[] SortReverseSortedData(int size) {
         // Read data from file
         List<Integer> data = FileIO.readFile("TrafficFlowDataset.csv");
+        Collections.shuffle(data);
 
         // Convert list to array
         int[] array = new int[size];
@@ -173,6 +178,7 @@ public class Experiments {
     public static double SearchRandomData(int size) {
         // Read data from file
         List<Integer> data = FileIO.readFile("TrafficFlowDataset.csv");
+        Collections.shuffle(data);
 
         // Convert list to array
         int[] array = new int[size];
@@ -214,6 +220,7 @@ public class Experiments {
     public static double[] SearchSortedData(int size) {
         // Read data from file
         List<Integer> data = FileIO.readFile("TrafficFlowDataset.csv");
+        Collections.shuffle(data);
 
         // Convert list to array
         int[] array = new int[size];
@@ -258,16 +265,40 @@ public class Experiments {
         return times;
     }
 
+    public static int[] generateRandomArray(int size) {
+        int[] array = new int[size];
+        for (int i = 0; i < size; i++) {
+            // Adjust the range of random values as needed
+            array[i] = ThreadLocalRandom.current().nextInt(0, size);
+        }
+        return array;
+    }
+
     public static void main(String[] args) {
-        //testRandom();
+
+        for (int warmup = 0; warmup < 100000; warmup++) {
+            int[] warmupArray = generateRandomArray(500); // Generate or read and shuffle
+            int key = warmupArray[ThreadLocalRandom.current().nextInt(500)];
+            LinearSearch.search(warmupArray, key);
+            BinarySearch.search(warmupArray, key);
+        }
+
+
+        System.out.println("Sort Random Data");
+        testSortRandom();
         System.out.println("--------------------------------------------------");
-        //testSorted();
+        System.out.println("Sort Sorted Data");
+        testSortSorted();
         System.out.println("--------------------------------------------------");
-        //testSorteReverseSorted();
+        System.out.println("Sort Reverse Sorted Data");
+        testSorteReverseSorted();
         System.out.println("--------------------------------------------------");
-        //testSearchRandom();
+        System.out.println("Search Random Data");
+        testSearchRandom();
         System.out.println("--------------------------------------------------");
+        System.out.println("Search Sorted Data");
         testSearchSorted();
+
     }
 
     public static void testSortRandom() {
