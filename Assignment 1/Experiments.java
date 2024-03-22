@@ -4,9 +4,15 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Experiments {
-    public static double[] SortRandomData(int size) {
+    String filePath;
+
+    public Experiments(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public double[] SortRandomData(int size) {
         // Read data from file
-        List<Integer> data = FileIO.readFile("TrafficFlowDataset.csv");
+        List<Integer> data = FileIO.readFile(filePath);
         Collections.shuffle(data);
 
         // Convert list to array
@@ -58,9 +64,9 @@ public class Experiments {
         return times;
     }
 
-    public static double[] SortSortedData(int size) {
+    public double[] SortSortedData(int size) {
         // Read data from file
-        List<Integer> data = FileIO.readFile("TrafficFlowDataset.csv");
+        List<Integer> data = FileIO.readFile(filePath);
         Collections.shuffle(data);
 
         // Convert list to array
@@ -114,9 +120,9 @@ public class Experiments {
         return times;
     }
 
-    public static double[] SortReverseSortedData(int size) {
+    public double[] SortReverseSortedData(int size) {
         // Read data from file
-        List<Integer> data = FileIO.readFile("TrafficFlowDataset.csv");
+        List<Integer> data = FileIO.readFile(filePath);
         Collections.shuffle(data);
 
         // Convert list to array
@@ -175,9 +181,9 @@ public class Experiments {
         return times;
     }
 
-    public static double SearchRandomData(int size) {
+    public double SearchRandomData(int size) {
         // Read data from file
-        List<Integer> data = FileIO.readFile("TrafficFlowDataset.csv");
+        List<Integer> data = FileIO.readFile(filePath);
         Collections.shuffle(data);
 
         // Convert list to array
@@ -217,9 +223,9 @@ public class Experiments {
         return linearSearchTime;
     }
 
-    public static double[] SearchSortedData(int size) {
+    public double[] SearchSortedData(int size) {
         // Read data from file
-        List<Integer> data = FileIO.readFile("TrafficFlowDataset.csv");
+        List<Integer> data = FileIO.readFile(filePath);
         Collections.shuffle(data);
 
         // Convert list to array
@@ -283,7 +289,7 @@ public class Experiments {
         }
     }
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
 
         warmup();
 
@@ -305,7 +311,7 @@ public class Experiments {
 
     }
 
-    public static void testSortRandom() {
+    public void testSortRandom() {
         SortRandomData(500);
         System.out.println("--------------------------------------------------");
 
@@ -336,7 +342,7 @@ public class Experiments {
         SortRandomData(250000);
     }
 
-    public static void testSortSorted() {
+    public void testSortSorted() {
         SortSortedData(500);
         System.out.println("--------------------------------------------------");
 
@@ -367,7 +373,7 @@ public class Experiments {
         SortSortedData(250000);
     }
 
-    public static void testSorteReverseSorted() {
+    public void testSorteReverseSorted() {
         SortReverseSortedData(500);
         System.out.println("--------------------------------------------------");
 
@@ -398,7 +404,7 @@ public class Experiments {
         SortReverseSortedData(250000);
     }
 
-    public static void testSearchRandom() {
+    public void testSearchRandom() {
         SearchRandomData(500);
         System.out.println("--------------------------------------------------");
 
@@ -429,7 +435,7 @@ public class Experiments {
         SearchRandomData(250000);
     }
 
-    public static void testSearchSorted() {
+    public void testSearchSorted() {
         SearchSortedData(500);
         System.out.println("--------------------------------------------------");
 

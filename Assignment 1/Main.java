@@ -6,15 +6,17 @@ import java.util.Arrays;
 class Main {
     public static void main(String args[]) throws IOException {
 
+        Experiments experimentMaker = new Experiments(args[0]);
+
         Experiments.warmup();
 
-        sortRandom();
-        sortSorted();
-        sortReverse();
-        searchAll();
+        sortRandom(experimentMaker);
+        sortSorted(experimentMaker);
+        sortReverse(experimentMaker);
+        searchAll(experimentMaker);
     }
 
-    public static void sortRandom() {
+    public static void sortRandom(Experiments experimentMaker) {
         int[] inputAxis = {500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000, 250000};
 
         double[] insertionSort = new double[inputAxis.length];
@@ -24,7 +26,7 @@ class Main {
         int i = 0;
 
         for (int inputs: inputAxis) {
-            allSorts[i] = Experiments.SortRandomData(inputs);
+            allSorts[i] = experimentMaker.SortRandomData(inputs);
             insertionSort[i] = allSorts[i][0];
             mergeSort[i] = allSorts[i][1];
             countingSort[i] = allSorts[i][2];
@@ -42,7 +44,7 @@ class Main {
         }
     }
 
-    public static void sortSorted() {
+    public static void sortSorted(Experiments experimentMaker) {
         int[] inputAxis = {500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000, 250000};
 
         double[] insertionSort = new double[inputAxis.length];
@@ -52,7 +54,7 @@ class Main {
         int i = 0;
 
         for (int inputs: inputAxis) {
-            allSorts[i] = Experiments.SortSortedData(inputs);
+            allSorts[i] = experimentMaker.SortSortedData(inputs);
             insertionSort[i] = allSorts[i][0];
             mergeSort[i] = allSorts[i][1];
             countingSort[i] = allSorts[i][2];
@@ -70,7 +72,7 @@ class Main {
         }
     }
 
-    public static void sortReverse() {
+    public static void sortReverse(Experiments experimentMaker) {
         int[] inputAxis = {500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000, 250000};
 
         double[] insertionSort = new double[inputAxis.length];
@@ -80,7 +82,7 @@ class Main {
         int i = 0;
 
         for (int inputs: inputAxis) {
-            allSorts[i] = Experiments.SortReverseSortedData(inputs);
+            allSorts[i] = experimentMaker.SortReverseSortedData(inputs);
             insertionSort[i] = allSorts[i][0];
             mergeSort[i] = allSorts[i][1];
             countingSort[i] = allSorts[i][2];
@@ -98,7 +100,7 @@ class Main {
         }
     }
 
-    public static void searchAll() {
+    public static void searchAll(Experiments experimentMaker) {
         // X axis data
         int[] inputAxis = {500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000, 250000};
 
@@ -106,7 +108,7 @@ class Main {
 
         for (int i = 0; i < inputAxis.length; i++) {
             int size = inputAxis[i];
-            linearSearchRandom[i] = Experiments.SearchRandomData(size);
+            linearSearchRandom[i] = experimentMaker.SearchRandomData(size);
         }
 
         double[] searchTimes = new double[2];
@@ -115,7 +117,7 @@ class Main {
 
         for (int i = 0; i < inputAxis.length; i++) {
             int size = inputAxis[i];
-            searchTimes = Experiments.SearchSortedData(size);
+            searchTimes = experimentMaker.SearchSortedData(size);
             linearSearchSorted[i] = searchTimes[0];
             binarySearchSorted[i] = searchTimes[1];
         }
@@ -134,6 +136,10 @@ class Main {
         // Create Chart
         XYChart chart = new XYChartBuilder().width(800).height(600).title(title)
                 .yAxisTitle("Time in Milliseconds").xAxisTitle("Input Size").build();
+
+        if (title.equals("Search Algorithms")) {
+            chart.setYAxisTitle("Time in Nanoseconds");
+        }
 
         // Convert x axis to double[]
         double[] doubleX = Arrays.stream(xAxis).asDoubleStream().toArray();
