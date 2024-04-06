@@ -40,10 +40,47 @@ public class OptimalESVDeploymentGP
      * @return the minimum number of ESVs required using first fit approach over reversely sorted items.
      * Must return -1 if all tasks can't be satisfied by the available ESVs
      */
-    public int getMinNumESVsToDeploy(int maxNumberOfAvailableESVs, int maxESVCapacity)
-    {
-        // TODO: Your code goes here
-        return -1;
+    public int getMinNumESVsToDeploy(int maxNumberOfAvailableESVs, int maxESVCapacity) {
+        Collections.sort(maintenanceTaskEnergyDemands, Collections.reverseOrder());
+
+        // Initialize ESVs storage
+        for (int i = 0; i < maxNumberOfAvailableESVs; i++) {
+            maintenanceTasksAssignedToESVs.add(new ArrayList<>());
+        }
+
+        int ESVsUsed = 0;
+        int[] ESVsRemainingCapacity = new int[maxNumberOfAvailableESVs];
+        for (int i = 0; i < maxNumberOfAvailableESVs; i++) {
+            ESVsRemainingCapacity[i] = maxESVCapacity;
+        }
+
+        for (Integer task : maintenanceTaskEnergyDemands) {
+            boolean taskAssigned = false;
+            for (int j = 0; j < ESVsUsed; j++) {
+                if (ESVsRemainingCapacity[j] >= task) {
+                    ESVsRemainingCapacity[j] -= task;
+                    maintenanceTasksAssignedToESVs.get(j).add(task);
+                    taskAssigned = true;
+                    break;
+                }
+            }
+
+            if (!taskAssigned) {
+                if (ESVsUsed < maxNumberOfAvailableESVs) {
+                    ESVsRemainingCapacity[ESVsUsed] -= task;
+                    maintenanceTasksAssignedToESVs.get(ESVsUsed).add(task);
+                    ESVsUsed++;
+                } else {
+                    return -1; // Not enough ESVs to complete all tasks
+                }
+            }
+        }
+
+        // Remove any empty ESV allocations
+        maintenanceTasksAssignedToESVs.removeIf(ArrayList::isEmpty);
+
+        return ESVsUsed;
     }
+
 
 }

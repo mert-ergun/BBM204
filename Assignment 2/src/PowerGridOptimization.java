@@ -25,7 +25,35 @@ public class PowerGridOptimization {
      * @return OptimalPowerGridSolution
      */
     public OptimalPowerGridSolution getOptimalPowerGridSolutionDP(){
-        // TODO: YOUR CODE HERE
-        return null;
+        int N = amountOfEnergyDemandsArrivingPerHour.size();
+        int[] SOL = new int[N + 1];
+        ArrayList<ArrayList<Integer>> HOURS = new ArrayList<>();
+
+        for (int i = 0; i <= N; i++) {
+            HOURS.add(new ArrayList<>());
+        }
+
+        for (int j = 1; j <= N; j++) {
+            for (int i = 0; i < j; i++) {
+                int additionalPower = Math.min(amountOfEnergyDemandsArrivingPerHour.get(j - 1), batteryEfficiency(j - i));
+                if (SOL[i] + additionalPower > SOL[j]) {
+                    SOL[j] = SOL[i] + additionalPower;
+                    HOURS.set(j, new ArrayList<>(HOURS.get(i)));
+                    HOURS.get(j).add(j);
+                }
+            }
+        }
+
+        return new OptimalPowerGridSolution(SOL[N], HOURS.get(N));
+    }
+
+
+    /**
+     * A basic function to calculate battery efficiency
+     * @param i battery charge
+     * @return battery efficiency
+     */
+    private int batteryEfficiency(int i) {
+        return i * i;
     }
 }
