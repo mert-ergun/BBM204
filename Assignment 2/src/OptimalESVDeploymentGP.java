@@ -43,6 +43,11 @@ public class OptimalESVDeploymentGP
     public int getMinNumESVsToDeploy(int maxNumberOfAvailableESVs, int maxESVCapacity) {
         Collections.sort(maintenanceTaskEnergyDemands, Collections.reverseOrder());
 
+        // Check if any task exceeds the maximum ESV capacity
+        if (maintenanceTaskEnergyDemands.get(0) > maxESVCapacity) {
+            return -1;
+        }
+
         // Initialize ESVs storage
         for (int i = 0; i < maxNumberOfAvailableESVs; i++) {
             maintenanceTasksAssignedToESVs.add(new ArrayList<>());
@@ -81,6 +86,7 @@ public class OptimalESVDeploymentGP
 
         return ESVsUsed;
     }
+
 
 
 }

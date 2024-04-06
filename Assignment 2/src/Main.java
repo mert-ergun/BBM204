@@ -49,9 +49,13 @@ public class Main {
         int minNumESVs = esvDeployment.getMinNumESVsToDeploy(maxNumberOfAvailableESVs, maxESVCapacity);
 
         System.out.println("##MISSION ECO-MAINTENANCE##");
-        System.out.println("The minimum number of ESVs to deploy: " + minNumESVs);
-        for (int i = 0; i < esvDeployment.getMaintenanceTasksAssignedToESVs().size(); i++) {
-            System.out.println("ESV " + (i + 1) + " tasks: " + esvDeployment.getMaintenanceTasksAssignedToESVs().get(i));
+        if (minNumESVs == -1) {
+            System.out.println("Warning: Mission Eco-Maintenance Failed.");
+        } else {
+            System.out.println("The minimum number of ESVs to deploy: " + minNumESVs);
+            for (int i = 0; i < esvDeployment.getMaintenanceTasksAssignedToESVs().size(); i++) {
+                System.out.println("ESV " + (i + 1) + " tasks: " + esvDeployment.getMaintenanceTasksAssignedToESVs().get(i));
+            }
         }
         System.out.println("##MISSION ECO-MAINTENANCE COMPLETED##");
     }
