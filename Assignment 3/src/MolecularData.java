@@ -24,7 +24,7 @@ public class MolecularData {
     
         for (Molecule molecule : molecules) {
             if (!visited.contains(molecule.getId())) {
-                dfs(molecule, structures, visited); // Perform DFS to build the structure
+                depthFirstSearch(molecule, structures, visited); // Perform DFS to build the structure
             }
         }
     
@@ -33,30 +33,21 @@ public class MolecularData {
     
 
     // Helper function for depth-first search to build molecular structures
-    private void dfs(Molecule molecule, List<MolecularStructure> structures, Set<String> visited) {
+    private void depthFirstSearch(Molecule molecule, List<MolecularStructure> structures, Set<String> visited) {
         visited.add(molecule.getId());
-    
-        // Check if any existing structure contains a molecule bonded to the current one
-        MolecularStructure existingStructure = findStructureWithBondedMolecule(molecule, structures);
-    
-        if (existingStructure != null) {
-            // Merge current molecule and its connected components into the existing structure
-            existingStructure.addMolecule(molecule);
-            for (String bondedId : molecule.getBonds()) {
+        MolecularStructure structure = findStructureWithBondedMolecule(molecule, structures);
+
+        if (structure == null) {
+            structure = new MolecularStructure();
+            structures.add(structure);
+        }
+        structure.addMolecule(molecule);
+
+        for (String bondedId : molecule.getBonds()) {
+            if (!visited.contains(bondedId)) {
                 Molecule bondedMolecule = findMoleculeById(bondedId);
-                if (bondedMolecule != null && !visited.contains(bondedId)) {
-                    dfs(bondedMolecule, structures, visited);
-                }
-            }
-        } else {
-            // Create a new structure for the current molecule and its connected components
-            MolecularStructure newStructure = new MolecularStructure();
-            newStructure.addMolecule(molecule);
-            structures.add(newStructure);
-            for (String bondedId : molecule.getBonds()) {
-                Molecule bondedMolecule = findMoleculeById(bondedId);
-                if (bondedMolecule != null && !visited.contains(bondedId)) {
-                    dfs(bondedMolecule, structures, visited);
+                if (bondedMolecule != null) {
+                    depthFirstSearch(bondedMolecule, structures, visited);
                 }
             }
         }
@@ -75,13 +66,11 @@ public class MolecularData {
 
     // Helper function to find a molecule by its ID
     private Molecule findMoleculeById(String id) {
-        for (Molecule molecule : molecules) {
-            if (molecule.getId().equals(id)) {
-                return molecule;
-            }
-        }
-        return null;
-    }    
+        return molecules.stream()
+                        .filter(m -> m.getId().equals(id))
+                        .findFirst()
+                        .orElse(null);
+    }
 
     // Method to print given molecular structures
     public void printMolecularStructures(List<MolecularStructure> molecularStructures, String species) {
