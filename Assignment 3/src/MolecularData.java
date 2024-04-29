@@ -55,12 +55,23 @@ public class MolecularData {
 
     private MolecularStructure findStructureWithBondedMolecule(Molecule molecule, List<MolecularStructure> structures) {
         for (MolecularStructure structure : structures) {
-            for (String bondedId : molecule.getBonds()) {
-                if (structure.hasMolecule(bondedId)) {
+            for (Molecule m : structure.getMolecules()) {
+                if (m.getBonds().contains(molecule.getId())) {
                     return structure;
                 }
             }
         }
+        
+        for (String bondedId : molecule.getBonds()) {
+            for (MolecularStructure structure : structures) {
+                for (Molecule m : structure.getMolecules()) {
+                    if (m.getId().equals(bondedId)) {
+                        return structure;
+                    }
+                }
+            }
+        }
+
         return null;
     }
 
