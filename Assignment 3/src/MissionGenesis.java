@@ -2,12 +2,12 @@
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document; // Import the Document class
+import org.w3c.dom.Document; 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.io.File; // Import the File class
+import java.io.File; 
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +45,6 @@ public class MissionGenesis {
  
          // Extract and store molecule data for Vitales
          molecularDataVitales = extractMolecularData(vitalesDataNodes);
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
